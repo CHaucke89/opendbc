@@ -348,12 +348,16 @@ static void generic_rx_checks(void) {
   // exit controls on rising edge of brake press
   if (brake_pressed && (!brake_pressed_prev || vehicle_moving)) {
     controls_allowed = false;
+  } else if (brake_pressed_prev && (!brake_pressed && vehicle_moving)) {
+    controls_allowed = true;
   }
   brake_pressed_prev = brake_pressed;
 
   // exit controls on rising edge of regen paddle
   if (regen_braking && (!regen_braking_prev || vehicle_moving)) {
     controls_allowed = false;
+  } else if (regen_braking_prev && (!regen_braking && vehicle_moving)) {
+    controls_allowed = true;
   }
   regen_braking_prev = regen_braking;
 
