@@ -15,7 +15,7 @@ Ecu = CarParams.Ecu
 
 class CarControllerParams:
   ACCEL_MIN = -3.5 # m/s
-  ACCEL_MAX = 2.0 # m/s
+  ACCEL_MAX = 4.0 # m/s
 
   def __init__(self, CP):
     self.STEER_DELTA_UP = 3
@@ -28,7 +28,7 @@ class CarControllerParams:
 
     if CP.flags & HyundaiFlags.CANFD:
       self.STEER_MAX = 409
-      self.STEER_DRIVER_ALLOWANCE = 450
+      self.STEER_DRIVER_ALLOWANCE = 350
       self.STEER_DRIVER_MULTIPLIER = 1
       self.STEER_THRESHOLD = 350
       self.STEER_DELTA_UP = 4
