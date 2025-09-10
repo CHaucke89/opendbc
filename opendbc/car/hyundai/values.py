@@ -32,7 +32,7 @@ class CarControllerParams:
     if CP.flags & HyundaiFlags.CANFD:
       self.DYNAMIC_TORQUE = True
       self.STEER_MAX = 409
-      self.STEER_MAX_LOOKUP = [9, 15, 21, 30], [409, 375, 350, 330]
+      self.STEER_MAX_LOOKUP = [9, 16, 20], [409, 375, 355]
       self.STEER_DRIVER_ALLOWANCE = 350
       self.STEER_DRIVER_MULTIPLIER = 1
       self.STEER_THRESHOLD = 350
