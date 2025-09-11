@@ -12,6 +12,8 @@ from opendbc.car.fw_query_definitions import FwQueryConfig, Request, p16
 
 from opendbc.sunnypilot.car.hyundai.values import HyundaiFlagsSP
 
+from openpilot.common.params import Params
+
 Ecu = CarParams.Ecu
 
 
@@ -20,6 +22,10 @@ class CarControllerParams:
   ACCEL_MAX = 4.0 # m/s
 
   def __init__(self, CP):
+
+    self.params = Params()
+    dynamic_torque = self.params.get_bool("DynamicTorque")
+
     self.STEER_DELTA_UP = 3
     self.STEER_DELTA_DOWN = 7
     self.STEER_DRIVER_ALLOWANCE = 50
@@ -30,7 +36,7 @@ class CarControllerParams:
     self.DYNAMIC_TORQUE = False
 
     if CP.flags & HyundaiFlags.CANFD:
-      self.DYNAMIC_TORQUE = True
+      self.DYNAMIC_TORQUE = dynamic_torque
       self.STEER_MAX = 409
       self.STEER_MAX_LOOKUP = [9, 16, 20], [409, 375, 355]
       self.STEER_DRIVER_ALLOWANCE = 350
@@ -64,12 +70,12 @@ class CarControllerParams:
       self.STEER_MAX = 384
 
   def update_dynamic_torque(self, vEgoRaw):
-      self.STEER_MAX = round(float(np.interp(vEgoRaw, self.STEER_MAX_LOOKUP[0],
-                                            self.STEER_MAX_LOOKUP[1])))
-      self.STEER_DELTA_UP = round(float(np.interp(vEgoRaw, self.STEER_DELTA_UP_LOOKUP[0],
-                                                        self.STEER_DELTA_UP_LOOKUP[1])))
-      self.STEER_DELTA_DOWN = round(float(np.interp(vEgoRaw, self.STEER_DELTA_DOWN_LOOKUP[0],
-                                                          self.STEER_DELTA_DOWN_LOOKUP[1])))
+    self.STEER_MAX = round(float(np.interp(vEgoRaw, self.STEER_MAX_LOOKUP[0],
+                                          self.STEER_MAX_LOOKUP[1])))
+    self.STEER_DELTA_UP = round(float(np.interp(vEgoRaw, self.STEER_DELTA_UP_LOOKUP[0],
+                                                      self.STEER_DELTA_UP_LOOKUP[1])))
+    self.STEER_DELTA_DOWN = round(float(np.interp(vEgoRaw, self.STEER_DELTA_DOWN_LOOKUP[0],
+                                                        self.STEER_DELTA_DOWN_LOOKUP[1])))
 
 class HyundaiSafetyFlags(IntFlag):
   EV_GAS = 1
