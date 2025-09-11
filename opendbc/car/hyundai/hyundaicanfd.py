@@ -5,6 +5,8 @@ from opendbc.car.crc import CRC16_XMODEM
 from opendbc.car.hyundai.values import HyundaiFlags
 from opendbc.sunnypilot.car.hyundai.lead_data_ext import CanFdLeadData
 
+from openpilot.common.params import Params
+
 
 class CanBus(CanBusBase):
   def __init__(self, CP, fingerprint=None, lka_steering=None) -> None:
@@ -39,6 +41,8 @@ class CanBus(CanBusBase):
 
 def create_steering_messages(packer, CP, CAN, enabled, lat_active, apply_torque, lkas_icon, vEgoRaw):
 
+  params = Params()
+  dynamic_damp = params.get_bool("DynamicDamp")
   damp_v = [11, 22]
   damp_lkp = [100, 115]
 
@@ -51,7 +55,7 @@ def create_steering_messages(packer, CP, CAN, enabled, lat_active, apply_torque,
     "STEER_MODE": 0,
     "HAS_LANE_SAFETY": 0,  # hide LKAS settings
     "NEW_SIGNAL_2": 0,
-    "DAMP_FACTOR": int(np.interp(vEgoRaw, damp_v, damp_lkp)),  # can potentially tuned for better perf [3, 200]
+    "DAMP_FACTOR": int(np.interp(vEgoRaw, damp_v, damp_lkp)) if dynamic_damp else 100,
   }
 
   lkas_values = copy.copy(common_values)
