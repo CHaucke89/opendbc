@@ -18,3 +18,6 @@ class Conversions:
 
   # Mass
   LB_TO_KG = 0.453592
+
+  # Distance
+  M_TO_FT = 3.28084
