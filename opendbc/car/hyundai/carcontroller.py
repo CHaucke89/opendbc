@@ -80,6 +80,9 @@ class CarController(CarControllerBase, EsccCarController, LeadDataCarController,
     if self.params.DYNAMIC_TORQUE:
       self.params.update_dynamic_torque(CS.out.vEgoRaw)
 
+    if self.params.DYNAMIC_DELTAS:
+      self.params.update_dynamic_deltas(CS.out.vEgoRaw)
+
     # steering torque
     new_torque = int(round(actuators.torque * self.params.STEER_MAX))
     apply_torque = apply_driver_steer_torque_limits(new_torque, self.apply_torque_last, CS.out.steeringTorque, self.params)
