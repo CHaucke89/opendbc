@@ -241,6 +241,8 @@ class CarState(CarStateBase, EsccCarStateBase, MadsCarState, CarStateExt):
     gear = cp.vl[self.gear_msg_canfd]["GEAR"]
     ret.gearShifter = self.parse_gear_shifter(self.shifter_values.get(gear))
 
+    ret.driverOnly = cp.vl["HVAC_TOUCH_BUTTONS"]["DRIVER_ONLY_BUTTON"] == 1
+
     # TODO: figure out positions
     self.parse_wheel_speeds(ret,
       cp.vl["WHEEL_SPEEDS"]["WHL_SpdFLVal"],
