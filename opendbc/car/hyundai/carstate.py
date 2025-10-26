@@ -244,10 +244,11 @@ class CarState(CarStateBase, EsccCarStateBase, MadsCarState, CarStateExt):
     ret.gearShifter = self.parse_gear_shifter(self.shifter_values.get(gear))
 
     self.driver_only_pressed = cp.vl["HVAC_TOUCH_BUTTONS"]["DRIVER_ONLY_BUTTON"] == 1
-    driver_only_pressed_prev = self.driver_only_pressed
 
     if driver_only_pressed_prev and not self.driver_only_pressed:
-      ret.driverOnly = not ret.driverOnlys
+      ret.driverOnly = not ret.driverOnly
+
+    driver_only_pressed_prev = self.driver_only_pressed
 
     # TODO: figure out positions
     self.parse_wheel_speeds(ret,
