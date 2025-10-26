@@ -71,7 +71,8 @@ class CarState(CarStateBase, EsccCarStateBase, MadsCarState, CarStateExt):
 
     self.params = CarControllerParams(CP)
 
-    self.driver_only_pressed = 0
+    self.driver_only_prev = 0
+    self.driver_only_active = 0
 
   def recent_button_interaction(self) -> bool:
     # On some newer model years, the CANCEL button acts as a pause/resume button based on the PCM state
@@ -243,12 +244,13 @@ class CarState(CarStateBase, EsccCarStateBase, MadsCarState, CarStateExt):
     gear = cp.vl[self.gear_msg_canfd]["GEAR"]
     ret.gearShifter = self.parse_gear_shifter(self.shifter_values.get(gear))
 
-    self.driver_only_pressed = cp.vl["HVAC_TOUCH_BUTTONS"]["DRIVER_ONLY_BUTTON"] == 1
+    driver_only = cp.vl["HVAC_TOUCH_BUTTONS"]["DRIVER_ONLY_BUTTON"]
 
-    if driver_only_pressed_prev and not self.driver_only_pressed:
-      ret.driverOnly = not ret.driverOnly
+    if self.driver_only_prev and not driver_only:
+      self.driver_only_active = not self.driver_only_active
 
-    driver_only_pressed_prev = self.driver_only_pressed
+    ret.driverOnly = self.driver_only_active
+    self.driver_only_prev = driver_only
 
     # TODO: figure out positions
     self.parse_wheel_speeds(ret,
