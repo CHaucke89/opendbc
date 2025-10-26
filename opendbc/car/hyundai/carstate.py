@@ -72,7 +72,7 @@ class CarState(CarStateBase, EsccCarStateBase, MadsCarState, CarStateExt):
     self.params = CarControllerParams(CP)
 
     self.driver_only_prev = 0
-    self.driver_only_active = 0
+    self.driver_only_active = True
 
   def recent_button_interaction(self) -> bool:
     # On some newer model years, the CANCEL button acts as a pause/resume button based on the PCM state
@@ -249,8 +249,8 @@ class CarState(CarStateBase, EsccCarStateBase, MadsCarState, CarStateExt):
     if self.driver_only_prev and not driver_only:
       self.driver_only_active = not self.driver_only_active
 
-    ret.driverOnly = self.driver_only_active
     self.driver_only_prev = driver_only
+    ret.driverOnly = self.driver_only_active
 
     # TODO: figure out positions
     self.parse_wheel_speeds(ret,
