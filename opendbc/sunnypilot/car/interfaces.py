@@ -17,6 +17,7 @@ from opendbc.sunnypilot.car.hyundai.enable_radar_tracks import enable_radar_trac
 from opendbc.sunnypilot.car.hyundai.longitudinal.helpers import LongitudinalTuningType, RadarType
 from opendbc.sunnypilot.car.hyundai.values import HyundaiFlagsSP
 from opendbc.sunnypilot.car.subaru.values_ext import SubaruFlagsSP, SubaruSafetyFlagsSP
+from opendbc.sunnypilot.car.tesla.values import TeslaFlagsSP
 
 
 class LatControlInputs(NamedTuple):
@@ -78,6 +79,7 @@ def setup_interfaces(CI, CP: structs.CarParams, CP_SP: structs.CarParamsSP,
 
   _initialize_custom_longitudinal_tuning(CI, CP, CP_SP, params_dict)
   _initialize_radar(CI, CP, CP_SP, params_dict)
+  _initialize_coop_steering(CP, CP_SP, params_dict)
   _initialize_radar_tracks(CP, CP_SP, can_recv, can_send)
   _initialize_stop_and_go(CP, CP_SP, params_dict)
 
@@ -107,6 +109,14 @@ def _initialize_radar(CI: CarInterfaceBaseSP, CP: structs.CarParams, CP_SP: stru
       CP_SP.flags |= HyundaiFlagsSP.RADAR_LEAD_ONLY.value
     if hyundai_radar == RadarType.FULL_RADAR:
       CP_SP.flags |= HyundaiFlagsSP.RADAR_FULL_RADAR.value
+
+
+def _initialize_coop_steering(CP: structs.CarParams, CP_SP: structs.CarParamsSP,
+                              params_dict: dict[str, str]) -> None:
+  if CP.brand == 'tesla':
+    coop_steering = int(params_dict.get("TeslaCoopSteering", 0)) == 1
+    if coop_steering:
+      CP_SP.flags |= TeslaFlagsSP.COOP_STEERING.value
 
 
 def _initialize_radar_tracks(CP: structs.CarParams, CP_SP: structs.CarParamsSP, can_recv: CanRecvCallable = None, can_send: CanSendCallable = None) -> None:
