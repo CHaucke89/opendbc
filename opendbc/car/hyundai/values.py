@@ -48,7 +48,7 @@ class CarControllerParams:
       self.STEER_DELTA_UP = 4
       self.STEER_DELTA_UP_LOOKUP = [11, 16, 29], [10, 7, 3]
       self.STEER_DELTA_DOWN = 5
-      self.STEER_DELTA_DOWN_LOOKUP = [11, 16, 29], [10, 8, 4]
+      self.STEER_DELTA_DOWN_LOOKUP = [11, 16, 29], [10, 8, 6]
 
     # To determine the limit for your car, find the maximum value that the stock LKAS will request.
     # If the max stock LKAS request is <384, add your car to this list.
