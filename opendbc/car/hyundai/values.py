@@ -158,6 +158,13 @@ class HyundaiFlags(IntFlag):
   MRR35_RADAR = 2 ** 29
 
 
+class Footnote(Enum):
+  CANFD = CarFootnote(
+    "Requires a <a href=\"https://comma.ai/shop/can-fd-panda-kit\" target=\"_blank\">CAN FD panda kit</a> if not using " +
+    "comma 3X for this <a href=\"https://en.wikipedia.org/wiki/CAN_FD\" target=\"_blank\">CAN FD car</a>.",
+    Column.MODEL)
+
+
 @dataclass
 class HyundaiCarDocs(CarDocs):
   package: str = "Smart Cruise Control (SCC)"
