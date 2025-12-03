@@ -142,12 +142,12 @@ static void hyundai_canfd_rx_hook(const CANPacket_t *msg) {
 
 static bool hyundai_canfd_tx_hook(const CANPacket_t *msg) {
   const TorqueSteeringLimits HYUNDAI_CANFD_STEERING_LIMITS = {
-    .max_torque = 270,
-    .max_rt_delta = 112,
-    .max_rate_up = 2,
-    .max_rate_down = 3,
+    .max_torque = 409,
+    .max_rt_delta = 336,
+    .max_rate_up = 10,
+    .max_rate_down = 15,
     .driver_torque_allowance = 250,
-    .driver_torque_multiplier = 2,
+    .driver_torque_multiplier = 1,
     .type = TorqueDriverLimited,
 
     // the EPS faults when the steering angle is above a certain threshold for too long. to prevent this,
