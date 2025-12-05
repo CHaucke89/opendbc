@@ -146,7 +146,7 @@ static bool hyundai_canfd_tx_hook(const CANPacket_t *msg) {
     .max_rt_delta = 336,
     .max_rate_up = 10,
     .max_rate_down = 15,
-    .driver_torque_allowance = 250,
+    .driver_torque_allowance = 450,
     .driver_torque_multiplier = 1,
     .type = TorqueDriverLimited,
 
