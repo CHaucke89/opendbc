@@ -15,9 +15,14 @@ Ecu = CarParams.Ecu
 
 class CarControllerParams:
   ACCEL_MIN = -3.5 # m/s
-  ACCEL_MAX = 2.0 # m/s
+  ACCEL_MAX = 4.0 # m/s
 
   def __init__(self, CP):
+
+    self.params = Params()
+    dynamic_torque = self.params.get_bool("DynamicTorque")
+    dynamic_deltas = self.params.get_bool("DynamicDeltas")
+
     self.STEER_DELTA_UP = 3
     self.STEER_DELTA_DOWN = 7
     self.STEER_DRIVER_ALLOWANCE = 50
@@ -25,14 +30,21 @@ class CarControllerParams:
     self.STEER_DRIVER_FACTOR = 1
     self.STEER_THRESHOLD = 150
     self.STEER_STEP = 1  # 100 Hz
+    self.DYNAMIC_TORQUE = False
+    self.DYNAMIC_DELTAS = False
 
     if CP.flags & HyundaiFlags.CANFD:
+      self.DYNAMIC_TORQUE = dynamic_torque
+      self.DYNAMIC_DELTAS = dynamic_deltas
       self.STEER_MAX = 409
+      self.STEER_MAX_LOOKUP = [9, 16, 20], [409, 375, 355]
       self.STEER_DRIVER_ALLOWANCE = 350
       self.STEER_DRIVER_MULTIPLIER = 1
       self.STEER_THRESHOLD = 350
       self.STEER_DELTA_UP = 4
+      self.STEER_DELTA_UP_LOOKUP = [11, 16, 29], [10, 7, 3]
       self.STEER_DELTA_DOWN = 5
+      self.STEER_DELTA_DOWN_LOOKUP = [11, 16, 29], [10, 8, 6]
 
     # To determine the limit for your car, find the maximum value that the stock LKAS will request.
     # If the max stock LKAS request is <384, add your car to this list.
@@ -56,6 +68,15 @@ class CarControllerParams:
     else:
       self.STEER_MAX = 384
 
+  def update_dynamic_torque(self, vEgoRaw):
+    self.STEER_MAX = round(float(np.interp(vEgoRaw, self.STEER_MAX_LOOKUP[0],
+                                          self.STEER_MAX_LOOKUP[1])))
+
+  def update_dynamic_deltas(self, vEgoRaw):
+    self.STEER_DELTA_UP = round(float(np.interp(vEgoRaw, self.STEER_DELTA_UP_LOOKUP[0],
+                                                      self.STEER_DELTA_UP_LOOKUP[1])))
+    self.STEER_DELTA_DOWN = round(float(np.interp(vEgoRaw, self.STEER_DELTA_DOWN_LOOKUP[0],
+                                                        self.STEER_DELTA_DOWN_LOOKUP[1])))
 
 class HyundaiSafetyFlags(IntFlag):
   EV_GAS = 1
