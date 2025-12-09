@@ -1,6 +1,7 @@
 import re
 from dataclasses import dataclass, field
 from enum import IntFlag
+import numpy as np
 
 from opendbc.car import Bus, CarSpecs, DbcDict, PlatformConfig, Platforms, uds
 from opendbc.car.common.conversions import Conversions as CV
