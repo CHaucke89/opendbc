@@ -83,6 +83,9 @@ class CarController(CarControllerBase, EsccCarController, LeadDataCarController,
     if self.params.DYNAMIC_DELTAS:
       self.params.update_dynamic_deltas(CS.out.vEgoRaw)
 
+    if self.params.DYNAMIC_DAMP_FACTOR:
+      self.params.update_dynamic_damp_factor(CS.out.vEgoRaw)
+
     # steering torque
     new_torque = int(round(actuators.torque * self.params.STEER_MAX))
     apply_torque = apply_driver_steer_torque_limits(new_torque, self.apply_torque_last, CS.out.steeringTorque, self.params)
@@ -197,7 +200,7 @@ class CarController(CarControllerBase, EsccCarController, LeadDataCarController,
     lka_steering_long = lka_steering and self.CP.openpilotLongitudinalControl
 
     # steering control
-    can_sends.extend(hyundaicanfd.create_steering_messages(self.packer, self.CP, self.CAN, CC.enabled, apply_steer_req, apply_torque, self.lkas_icon))
+    can_sends.extend(hyundaicanfd.create_steering_messages(self.packer, self.CP, self.CAN, CC.enabled, apply_steer_req, apply_torque, self.lkas_icon, self.params.DAMP_FACTOR))
 
     # prevent LFA from activating on LKA steering cars by sending "no lane lines detected" to ADAS ECU
     if self.frame % 5 == 0 and lka_steering:

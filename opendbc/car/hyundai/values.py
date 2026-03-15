@@ -24,6 +24,7 @@ class CarControllerParams:
     self.params = Params()
     dynamic_torque = self.params.get_bool("DynamicTorque")
     dynamic_deltas = self.params.get_bool("DynamicDeltas")
+    dynamic_damp_factor = self.params.get_bool("DynamicDampFactor")
 
     self.STEER_DELTA_UP = 3
     self.STEER_DELTA_DOWN = 7
@@ -32,12 +33,15 @@ class CarControllerParams:
     self.STEER_DRIVER_FACTOR = 1
     self.STEER_THRESHOLD = 150
     self.STEER_STEP = 1  # 100 Hz
+    self.DAMP_FACTOR = 100
     self.DYNAMIC_TORQUE = False
     self.DYNAMIC_DELTAS = False
+    self.DYNAMIC_DAMP_FACTOR = False
 
     if CP.flags & HyundaiFlags.CANFD:
       self.DYNAMIC_TORQUE = dynamic_torque
       self.DYNAMIC_DELTAS = dynamic_deltas
+      self.DYNAMIC_DAMP_FACTOR = dynamic_damp_factor
       self.STEER_MAX = 409
       self.STEER_MAX_LOOKUP = [9, 16, 20], [409, 375, 355]
       self.STEER_DRIVER_ALLOWANCE = 350
@@ -47,6 +51,7 @@ class CarControllerParams:
       self.STEER_DELTA_UP_LOOKUP = [11, 16, 29], [10, 7, 3]
       self.STEER_DELTA_DOWN = 5
       self.STEER_DELTA_DOWN_LOOKUP = [11, 16, 29], [10, 8, 6]
+      self.DAMP_FACTOR_LOOKUP = [11, 29], [100, 115]
 
     # To determine the limit for your car, find the maximum value that the stock LKAS will request.
     # If the max stock LKAS request is <384, add your car to this list.
@@ -79,6 +84,10 @@ class CarControllerParams:
                                                       self.STEER_DELTA_UP_LOOKUP[1])))
     self.STEER_DELTA_DOWN = round(float(np.interp(vEgoRaw, self.STEER_DELTA_DOWN_LOOKUP[0],
                                                         self.STEER_DELTA_DOWN_LOOKUP[1])))
+
+  def update_dynamic_damp_factor(self, vEgoRaw):
+    self.DAMP_FACTOR = round(float(np.interp(vEgoRaw, self.DAMP_FACTOR_LOOKUP[0],
+                                                  self.DAMP_FACTOR_LOOKUP[1])))
 
 class HyundaiSafetyFlags(IntFlag):
   EV_GAS = 1
