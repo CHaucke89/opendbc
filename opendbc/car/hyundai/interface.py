@@ -8,9 +8,9 @@ from opendbc.car.hyundai.carcontroller import CarController
 from opendbc.car.hyundai.carstate import CarState
 from opendbc.car.hyundai.radar_interface import RadarInterface
 
-from opendbc.sunnypilot.car.hyundai.escc import ESCC_MSG
-from opendbc.sunnypilot.car.hyundai.longitudinal.helpers import get_longitudinal_tune
-from opendbc.sunnypilot.car.hyundai.values import HyundaiFlagsSP, HyundaiSafetyFlagsSP
+from opendbc.cloudypilot.car.hyundai.escc import ESCC_MSG
+from opendbc.cloudypilot.car.hyundai.longitudinal.helpers import get_longitudinal_tune
+from opendbc.cloudypilot.car.hyundai.values import HyundaiFlagsSP, HyundaiSafetyFlagsSP
 
 ButtonType = structs.CarState.ButtonEvent.Type
 Ecu = structs.CarParams.Ecu
@@ -212,7 +212,7 @@ class CarInterface(CarInterfaceBase):
       if 0x1fa in fingerprint[CAN.ECAN]:
         ret.flags |= HyundaiFlagsSP.SPEED_LIMIT_AVAILABLE.value
     else:
-      # Detect smartMDPS, which bypasses EPS low-speed lockout, allowing sunnypilot to send steering commands down to 0
+      # Detect smartMDPS, which bypasses EPS low-speed lockout, allowing cloudypilot to send steering commands down to 0
       if 0x2AA in fingerprint[0]:
         stock_cp.minSteerSpeed = 0.0
         stock_cp.flags &= ~HyundaiFlags.MIN_STEER_32_MPH.value

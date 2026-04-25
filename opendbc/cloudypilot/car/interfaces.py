@@ -1,7 +1,7 @@
 """
-Copyright (c) 2021-, Haibin Wen, sunnypilot, and a number of other contributors.
+Copyright (c) 2021-, Haibin Wen, cloudypilot, and a number of other contributors.
 
-This file is part of sunnypilot and is licensed under the MIT License.
+This file is part of cloudypilot and is licensed under the MIT License.
 See the LICENSE.md file in the root directory for more details.
 """
 import json
@@ -14,12 +14,12 @@ from opendbc.car.can_definitions import CanRecvCallable, CanSendCallable
 from opendbc.car.hyundai.values import HyundaiFlags
 from opendbc.car.subaru.values import SubaruFlags
 from opendbc.car.toyota.values import ToyotaSafetyFlags
-from opendbc.sunnypilot.car.hyundai.enable_radar_tracks import enable_radar_tracks as hyundai_enable_radar_tracks
-from opendbc.sunnypilot.car.hyundai.longitudinal.helpers import LongitudinalTuningType, RadarType
-from opendbc.sunnypilot.car.hyundai.values import HyundaiFlagsSP
-from opendbc.sunnypilot.car.subaru.values_ext import SubaruFlagsSP, SubaruSafetyFlagsSP
-from opendbc.sunnypilot.car.tesla.values import TeslaFlagsSP
-from opendbc.sunnypilot.car.toyota.values import ToyotaFlagsSP
+from opendbc.cloudypilot.car.hyundai.enable_radar_tracks import enable_radar_tracks as hyundai_enable_radar_tracks
+from opendbc.cloudypilot.car.hyundai.longitudinal.helpers import LongitudinalTuningType, RadarType
+from opendbc.cloudypilot.car.hyundai.values import HyundaiFlagsSP
+from opendbc.cloudypilot.car.subaru.values_ext import SubaruFlagsSP, SubaruSafetyFlagsSP
+from opendbc.cloudypilot.car.tesla.values import TeslaFlagsSP
+from opendbc.cloudypilot.car.toyota.values import ToyotaFlagsSP
 
 
 class LatControlInputs(NamedTuple):

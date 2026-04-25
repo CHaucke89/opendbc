@@ -1,8 +1,8 @@
 """ AUTO-FORMATTED USING opendbc/car/debug/format_fingerprints.py, EDIT STRUCTURE THERE."""
 from opendbc.car.structs import CarParams
 from opendbc.car.tesla.values import CAR
-from opendbc.sunnypilot.car.fingerprints_ext import merge_fw_versions
-from opendbc.sunnypilot.car.tesla.fingerprints_ext import FW_VERSIONS_EXT
+from opendbc.cloudypilot.car.fingerprints_ext import merge_fw_versions
+from opendbc.cloudypilot.car.tesla.fingerprints_ext import FW_VERSIONS_EXT
 
 Ecu = CarParams.Ecu
 

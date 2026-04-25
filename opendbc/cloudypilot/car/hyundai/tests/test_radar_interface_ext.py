@@ -5,7 +5,7 @@ from opendbc.testing import parameterized
 from opendbc.car import CanData
 from opendbc.car.car_helpers import interfaces
 from opendbc.car.hyundai.values import CAR, HyundaiFlags
-from opendbc.sunnypilot.car.hyundai.escc import ESCC_MSG
+from opendbc.cloudypilot.car.hyundai.escc import ESCC_MSG
 
 ESCC_CARS = [
   (CAR.HYUNDAI_ELANTRA_2021, ESCC_MSG),

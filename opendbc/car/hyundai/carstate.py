@@ -9,10 +9,10 @@ from opendbc.car.hyundai.hyundaicanfd import CanBus
 from opendbc.car.hyundai.values import HyundaiFlags, CAR, DBC, Buttons, CarControllerParams
 from opendbc.car.interfaces import CarStateBase
 
-from opendbc.sunnypilot.car.hyundai.carstate_ext import CarStateExt
-from opendbc.sunnypilot.car.hyundai.escc import EsccCarStateBase
-from opendbc.sunnypilot.car.hyundai.mads import MadsCarState
-from opendbc.sunnypilot.car.hyundai.values import HyundaiFlagsSP
+from opendbc.cloudypilot.car.hyundai.carstate_ext import CarStateExt
+from opendbc.cloudypilot.car.hyundai.escc import EsccCarStateBase
+from opendbc.cloudypilot.car.hyundai.mads import MadsCarState
+from opendbc.cloudypilot.car.hyundai.values import HyundaiFlagsSP
 
 ButtonType = structs.CarState.ButtonEvent.Type
 

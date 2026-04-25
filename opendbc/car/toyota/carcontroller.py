@@ -13,8 +13,8 @@ from opendbc.car.toyota.values import CAR, NO_STOP_TIMER_CAR, TSS2_CAR, \
                                         UNSUPPORTED_DSU_CAR
 from opendbc.can import CANPacker
 
-from opendbc.sunnypilot.car.toyota.gas_interceptor import GasInterceptorCarController
-from opendbc.sunnypilot.car.toyota.values import ToyotaFlagsSP
+from opendbc.cloudypilot.car.toyota.gas_interceptor import GasInterceptorCarController
+from opendbc.cloudypilot.car.toyota.values import ToyotaFlagsSP
 
 Ecu = structs.CarParams.Ecu
 LongCtrlState = structs.CarControl.Actuators.LongControlState

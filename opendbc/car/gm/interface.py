@@ -10,13 +10,13 @@ from opendbc.car.gm.radar_interface import RadarInterface, RADAR_HEADER_MSG, CAM
 from opendbc.car.gm.values import CAR, CarControllerParams, EV_CAR, CAMERA_ACC_CAR, SDGM_CAR, ALT_ACCS, CanBus, GMSafetyFlags
 from opendbc.car.interfaces import CarInterfaceBase, TorqueFromLateralAccelCallbackType, LateralAccelFromTorqueCallbackType
 
-from opendbc.sunnypilot.car.gm.interface_ext import CarInterfaceExt
-from opendbc.sunnypilot.car.gm.values_ext import GMFlagsSP, GMSafetyFlagsSP
+from opendbc.cloudypilot.car.gm.interface_ext import CarInterfaceExt
+from opendbc.cloudypilot.car.gm.values_ext import GMFlagsSP, GMSafetyFlagsSP
 
 TransmissionType = structs.CarParams.TransmissionType
 NetworkLocation = structs.CarParams.NetworkLocation
 
-# sunnypilot-specific torque parameters for Bolt cars that actually use the d parameter
+# cloudypilot-specific torque parameters for Bolt cars that actually use the d parameter
 NON_LINEAR_TORQUE_PARAMS_SP = {
   CAR.CHEVROLET_BOLT_NON_ACC: [2.24, 1.1, 0.28, -0.07],
   CAR.CHEVROLET_BOLT_NON_ACC_1ST_GEN: [1.8, 1.1, 0.3, -0.045],

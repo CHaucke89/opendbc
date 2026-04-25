@@ -1,9 +1,9 @@
 import unittest
 
-from opendbc.sunnypilot.car.hyundai.escc import EnhancedSmartCruiseControl, ESCC_MSG
+from opendbc.cloudypilot.car.hyundai.escc import EnhancedSmartCruiseControl, ESCC_MSG
 from opendbc.car.hyundai.carstate import CarState
 from opendbc.car import structs
-from opendbc.sunnypilot.car.hyundai.values import HyundaiFlagsSP
+from opendbc.cloudypilot.car.hyundai.values import HyundaiFlagsSP
 
 
 class TestEscc(unittest.TestCase):

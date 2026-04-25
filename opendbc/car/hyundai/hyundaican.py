@@ -1,8 +1,8 @@
 from opendbc.car.crc import CRC8J1850, mk_crc8_fun
 from opendbc.car.hyundai.values import CAR, HyundaiFlags
 
-from opendbc.sunnypilot.car.hyundai.escc import EnhancedSmartCruiseControl
-from opendbc.sunnypilot.car.hyundai.lead_data_ext import CanLeadData
+from opendbc.cloudypilot.car.hyundai.escc import EnhancedSmartCruiseControl
+from opendbc.cloudypilot.car.hyundai.lead_data_ext import CanLeadData
 
 hyundai_checksum = mk_crc8_fun(CRC8J1850, init_crc=0xFD, xor_out=0xDF)
 

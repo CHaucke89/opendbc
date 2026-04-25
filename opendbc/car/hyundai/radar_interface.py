@@ -5,8 +5,8 @@ from opendbc.car import Bus, structs
 from opendbc.car.interfaces import RadarInterfaceBase
 from opendbc.car.hyundai.values import DBC, HyundaiFlags
 
-from opendbc.sunnypilot.car.hyundai.radar_interface_ext import RadarInterfaceExt
-from opendbc.sunnypilot.car.hyundai.values import HyundaiFlagsSP
+from opendbc.cloudypilot.car.hyundai.radar_interface_ext import RadarInterfaceExt
+from opendbc.cloudypilot.car.hyundai.values import HyundaiFlagsSP
 
 MANDO_RADAR_ADDR = 0x500
 MANDO_RADAR_COUNT = 32

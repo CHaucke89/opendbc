@@ -1,7 +1,7 @@
 """
-Copyright (c) 2021-, Haibin Wen, sunnypilot, and a number of other contributors.
+Copyright (c) 2021-, Haibin Wen, cloudypilot, and a number of other contributors.
 
-This file is part of sunnypilot and is licensed under the MIT License.
+This file is part of cloudypilot and is licensed under the MIT License.
 See the LICENSE.md file in the root directory for more details.
 """
 
@@ -12,8 +12,8 @@ from opendbc.car import Bus, DT_CTRL, structs
 from opendbc.car.hyundai.values import CAR
 
 from opendbc.car.hyundai.values import HyundaiFlags
-from opendbc.sunnypilot.car.hyundai.values import HyundaiFlagsSP
-from opendbc.sunnypilot.mads_base import MadsCarStateBase
+from opendbc.cloudypilot.car.hyundai.values import HyundaiFlagsSP
+from opendbc.cloudypilot.mads_base import MadsCarStateBase
 from opendbc.can.parser import CANParser
 
 ButtonType = structs.CarState.ButtonEvent.Type

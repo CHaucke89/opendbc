@@ -11,7 +11,7 @@ from opendbc.car.mock.values import CAR as MOCK
 from opendbc.car.values import BRANDS
 from opendbc.car.vin import get_vin, is_valid_vin, VIN_UNKNOWN
 
-from opendbc.sunnypilot.car.interfaces import setup_interfaces as sunnypilot_interfaces
+from opendbc.cloudypilot.car.interfaces import setup_interfaces as cloudypilot_interfaces
 
 FRAME_FINGERPRINT = 100  # 1s
 
@@ -169,7 +169,7 @@ def get_car(can_recv: CanRecvCallable, can_send: CanSendCallable, set_obd_multip
   CP.fuzzyFingerprint = not exact_match
   CP_SP = CarInterface.get_params_sp(CP, candidate, fingerprints, car_fw, alpha_long_allowed, is_release_sp, docs=False)
 
-  sunnypilot_interfaces(CarInterface, CP, CP_SP, init_params_list_sp, can_recv, can_send)
+  cloudypilot_interfaces(CarInterface, CP, CP_SP, init_params_list_sp, can_recv, can_send)
 
   return interfaces[CP.carFingerprint](CP, CP_SP)
 

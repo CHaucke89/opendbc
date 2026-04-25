@@ -7,7 +7,7 @@ from opendbc.car.toyota.values import Ecu, CAR, DBC, ToyotaFlags, CarControllerP
                                                   ToyotaSafetyFlags, UNSUPPORTED_DSU_CAR
 from opendbc.car.disable_ecu import disable_ecu
 from opendbc.car.interfaces import CarInterfaceBase
-from opendbc.sunnypilot.car.toyota.values import ToyotaFlagsSP, ToyotaSafetyFlagsSP
+from opendbc.cloudypilot.car.toyota.values import ToyotaFlagsSP, ToyotaSafetyFlagsSP
 
 SteerControlType = structs.CarParams.SteerControlType
 
@@ -143,7 +143,7 @@ class CarInterface(CarInterfaceBase):
     if 0x2AA in fingerprint[0] and candidate in NO_DSU_CAR:
       ret.flags |= ToyotaFlagsSP.RADAR_CAN_FILTER.value
 
-    # Detect ZSS, which allows sunnypilot to utilize an improved angle sensor for some Toyota vehicles
+    # Detect ZSS, which allows cloudypilot to utilize an improved angle sensor for some Toyota vehicles
     # https://github.com/zorrobyte/betterToyotaAngleSensorForOP
     if 0x23 in fingerprint[0] and not stock_cp.flags & ToyotaFlags.SECOC:
       ret.flags |= ToyotaFlagsSP.ZSS.value

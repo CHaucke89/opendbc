@@ -1,7 +1,7 @@
 """
-Copyright (c) 2021-, Haibin Wen, sunnypilot, and a number of other contributors.
+Copyright (c) 2021-, Haibin Wen, cloudypilot, and a number of other contributors.
 
-This file is part of sunnypilot and is licensed under the MIT License.
+This file is part of cloudypilot and is licensed under the MIT License.
 See the LICENSE.md file in the root directory for more details.
 """
 
@@ -13,8 +13,8 @@ from opendbc.car.can_definitions import CanData
 from opendbc.car.interfaces import CarStateBase
 from opendbc.car.subaru.values import SubaruFlags
 
-from opendbc.sunnypilot.car.subaru import subarucan_ext
-from opendbc.sunnypilot.car.subaru.values_ext import SubaruFlagsSP
+from opendbc.cloudypilot.car.subaru import subarucan_ext
+from opendbc.cloudypilot.car.subaru.values_ext import SubaruFlagsSP
 from opendbc.can.parser import CANParser
 
 _SNG_ACC_MIN_DIST = 3

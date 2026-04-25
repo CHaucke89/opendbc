@@ -3,8 +3,8 @@ from opendbc.car import structs, Bus
 from opendbc.car.hyundai.hyundaicanfd import CanBus
 from opendbc.car.hyundai.values import DBC, HyundaiFlags
 
-from opendbc.sunnypilot.car.hyundai.escc import EsccRadarInterfaceBase
-from opendbc.sunnypilot.car.hyundai.values import HyundaiFlagsSP
+from opendbc.cloudypilot.car.hyundai.escc import EsccRadarInterfaceBase
+from opendbc.cloudypilot.car.hyundai.values import HyundaiFlagsSP
 
 
 class RadarInterfaceExt(EsccRadarInterfaceBase):

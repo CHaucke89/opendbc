@@ -2,7 +2,7 @@ import numpy as np
 from opendbc.car import CanBusBase
 from opendbc.car.crc import CRC16_XMODEM
 from opendbc.car.hyundai.values import HyundaiFlags
-from opendbc.sunnypilot.car.hyundai.lead_data_ext import CanFdLeadData
+from opendbc.cloudypilot.car.hyundai.lead_data_ext import CanFdLeadData
 
 
 class CanBus(CanBusBase):

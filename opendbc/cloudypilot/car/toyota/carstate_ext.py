@@ -1,7 +1,7 @@
 """
-Copyright (c) 2021-, Haibin Wen, sunnypilot, and a number of other contributors.
+Copyright (c) 2021-, Haibin Wen, cloudypilot, and a number of other contributors.
 
-This file is part of sunnypilot and is licensed under the MIT License.
+This file is part of cloudypilot and is licensed under the MIT License.
 See the LICENSE.md file in the root directory for more details.
 """
 
@@ -11,7 +11,7 @@ from opendbc.car import Bus, structs
 from opendbc.car.carlog import carlog
 from opendbc.can.parser import CANParser
 from opendbc.car.common.conversions import Conversions as CV
-from opendbc.sunnypilot.car.toyota.values import ToyotaFlagsSP
+from opendbc.cloudypilot.car.toyota.values import ToyotaFlagsSP
 
 TRAFFIC_SIGNAL_MAP = {
   1: "kph",

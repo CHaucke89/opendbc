@@ -1,7 +1,7 @@
 import unittest
 from enum import IntFlag
 
-from opendbc.sunnypilot.car.hyundai.lead_data_ext import LeadDataCarController, CanLeadData, CanFdLeadData
+from opendbc.cloudypilot.car.hyundai.lead_data_ext import LeadDataCarController, CanLeadData, CanFdLeadData
 from opendbc.car import structs
 from opendbc.car.hyundai.values import HyundaiFlags
 

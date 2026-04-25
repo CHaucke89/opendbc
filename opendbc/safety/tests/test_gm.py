@@ -7,7 +7,7 @@ from opendbc.safety.tests.libsafety import libsafety_py
 import opendbc.safety.tests.common as common
 from opendbc.safety.tests.common import CANPackerSafety
 
-from opendbc.sunnypilot.car.gm.values_ext import GMSafetyFlagsSP
+from opendbc.cloudypilot.car.gm.values_ext import GMSafetyFlagsSP
 
 
 class Buttons:
