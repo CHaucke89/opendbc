@@ -39,19 +39,27 @@ class CarControllerParams:
     self.DYNAMIC_DAMP_FACTOR = False
 
     if CP.flags & HyundaiFlags.CANFD:
-      self.DYNAMIC_TORQUE = dynamic_torque
-      self.DYNAMIC_DELTAS = dynamic_deltas
-      self.DYNAMIC_DAMP_FACTOR = dynamic_damp_factor
-      self.STEER_MAX = 409
-      self.STEER_MAX_LOOKUP = [9, 16, 20], [409, 375, 355]
-      self.STEER_DRIVER_ALLOWANCE = 350
-      self.STEER_DRIVER_MULTIPLIER = 1
-      self.STEER_THRESHOLD = 350
-      self.STEER_DELTA_UP = 4
-      self.STEER_DELTA_UP_LOOKUP = [11, 16, 29], [10, 5, 3]
-      self.STEER_DELTA_DOWN = 5
-      self.STEER_DELTA_DOWN_LOOKUP = [11, 16, 29], [10, 6, 4]
-      self.DAMP_FACTOR_LOOKUP = [11, 29], [100, 115]
+      self.STEER_MAX = 270
+      self.STEER_DRIVER_ALLOWANCE = 250
+      self.STEER_DRIVER_MULTIPLIER = 2
+      self.STEER_THRESHOLD = 250
+      self.STEER_DELTA_UP = 2
+      self.STEER_DELTA_DOWN = 3
+      
+      if CP.carFingerprint == CAR.KIA_EV6:
+        self.DYNAMIC_TORQUE = dynamic_torque
+        self.DYNAMIC_DELTAS = dynamic_deltas
+        self.DYNAMIC_DAMP_FACTOR = dynamic_damp_factor
+        self.STEER_MAX = 409
+        self.STEER_MAX_LOOKUP = [9, 16, 20], [409, 375, 355]
+        self.STEER_DRIVER_ALLOWANCE = 350
+        self.STEER_DRIVER_MULTIPLIER = 1
+        self.STEER_THRESHOLD = 350
+        self.STEER_DELTA_UP = 4
+        self.STEER_DELTA_UP_LOOKUP = [11, 16, 29], [10, 5, 3]
+        self.STEER_DELTA_DOWN = 5
+        self.STEER_DELTA_DOWN_LOOKUP = [11, 16, 29], [10, 6, 4]
+        self.DAMP_FACTOR_LOOKUP = [11, 29], [100, 115]
 
     # To determine the limit for your car, find the maximum value that the stock LKAS will request.
     # If the max stock LKAS request is <384, add your car to this list.
