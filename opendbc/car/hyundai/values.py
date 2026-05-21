@@ -45,7 +45,7 @@ class CarControllerParams:
       self.STEER_THRESHOLD = 250
       self.STEER_DELTA_UP = 2
       self.STEER_DELTA_DOWN = 3
-      
+
       if CP.carFingerprint == CAR.KIA_EV6:
         self.DYNAMIC_TORQUE = dynamic_torque
         self.DYNAMIC_DELTAS = dynamic_deltas
@@ -56,9 +56,9 @@ class CarControllerParams:
         self.STEER_DRIVER_MULTIPLIER = 1
         self.STEER_THRESHOLD = 350
         self.STEER_DELTA_UP = 4
-        self.STEER_DELTA_UP_LOOKUP = [11, 16, 29], [10, 5, 3]
+        self.STEER_DELTA_UP_LOOKUP = [11, 16, 29], [7, 5, 3] # mph: [24.6, 35.8, 64.9]
         self.STEER_DELTA_DOWN = 5
-        self.STEER_DELTA_DOWN_LOOKUP = [11, 16, 29], [10, 6, 4]
+        self.STEER_DELTA_DOWN_LOOKUP = [11, 16, 29], [12, 6, 4]
         self.DAMP_FACTOR_LOOKUP = [11, 29], [100, 115]
 
     # To determine the limit for your car, find the maximum value that the stock LKAS will request.
