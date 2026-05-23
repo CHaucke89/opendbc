@@ -225,6 +225,9 @@ class CarInterface(CarInterfaceBase):
 
     ret.intelligentCruiseButtonManagementAvailable = not (stock_cp.flags & HyundaiFlags.CANFD_ALT_BUTTONS)
 
+    if 0x448 in fingerprint[CAN.ECAN]:
+      ret.flags |= HyundaiFlagsSP.HAS_CUSTOM_BUTTON.value
+
     return ret
 
   @staticmethod
