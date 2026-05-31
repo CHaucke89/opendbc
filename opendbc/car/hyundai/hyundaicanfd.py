@@ -36,7 +36,7 @@ class CanBus(CanBusBase):
     return self._cam
 
 
-def create_steering_messages(packer, CP, CAN, enabled, lat_active, apply_torque, lkas_icon):
+def create_steering_messages(packer, CP, CAN, enabled, lat_active, apply_torque, lkas_icon, damping_gain):
   values = {
     "LKA_OptUsmSta": 2,
     "LKA_SysIndReq": lkas_icon,
@@ -45,7 +45,7 @@ def create_steering_messages(packer, CP, CAN, enabled, lat_active, apply_torque,
     "ActToiSta": 1 if lat_active else 0,
     "LKA_UsmMod": 0,  # hide LKAS settings
     "LKA_RcgSta": 0,
-    "Damping_Gain": 100,  # can potentially tuned for better perf [3, 200]
+    "Damping_Gain": damping_gain,
   }
 
   ret = []
