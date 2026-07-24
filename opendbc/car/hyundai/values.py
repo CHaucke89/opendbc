@@ -25,7 +25,7 @@ class CarControllerParams:
     # The ADAS ECU clamps LKAS commands above 176.7° down to 176.7°,
     # and clamps LFA commands above 119.9° down to 119.9°.
     360,  # degrees (safe upper bound for command, allowing some margin)
-    MAX_ANGLE_RATE=5  # comfort rate limit for angle commands, in degrees per frame.
+    MAX_ANGLE_RATE=7  # comfort rate limit for angle commands, in degrees per frame.
   )
 
   # More torque optimization
