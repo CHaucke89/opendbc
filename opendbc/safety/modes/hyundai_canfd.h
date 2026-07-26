@@ -169,9 +169,9 @@ static bool hyundai_canfd_tx_hook(const CANPacket_t *msg) {
   };
 
   const AngleSteeringLimits HYUNDAI_CANFD_ANGLE_STEERING_LIMITS = {
-    .max_angle = 4500,
-    .angle_deg_to_can = 10,
-    .frequency = 200U,
+    .max_angle = 3600,
+    .angle_deg_to_can = 5,
+    .frequency = 100U,
   };
 
   // We need to find a middle ground between all the possible params or find a way to properly fingerprint.
