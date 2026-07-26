@@ -152,12 +152,12 @@ static void hyundai_canfd_rx_hook(const CANPacket_t *msg) {
 
 static bool hyundai_canfd_tx_hook(const CANPacket_t *msg) {
   const TorqueSteeringLimits HYUNDAI_CANFD_TORQUE_STEERING_LIMITS = {
-    .max_torque = 270,
-    .max_rt_delta = 112,
-    .max_rate_up = 2,
-    .max_rate_down = 3,
-    .driver_torque_allowance = 250,
-    .driver_torque_multiplier = 2,
+    .max_torque = 409,
+    .max_rt_delta = 224,
+    .max_rate_up = 4,
+    .max_rate_down = 5,
+    .driver_torque_allowance = 350,
+    .driver_torque_multiplier = 1,
     .type = TorqueDriverLimited,
 
     // the EPS faults when the steering angle is above a certain threshold for too long. to prevent this,
@@ -169,9 +169,9 @@ static bool hyundai_canfd_tx_hook(const CANPacket_t *msg) {
   };
 
   const AngleSteeringLimits HYUNDAI_CANFD_ANGLE_STEERING_LIMITS = {
-    .max_angle = 3600,
-    .angle_deg_to_can = 10,
-    .frequency = 100U,
+    .max_angle = 4500,
+    .angle_deg_to_can = 12,
+    .frequency = 200U,
   };
 
   // We need to find a middle ground between all the possible params or find a way to properly fingerprint.
