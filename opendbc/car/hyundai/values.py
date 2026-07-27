@@ -25,7 +25,7 @@ class CarControllerParams:
     # The ADAS ECU clamps LKAS commands above 176.7° down to 176.7°,
     # and clamps LFA commands above 119.9° down to 119.9°.
     450,  # degrees (safe upper bound for command, allowing some margin)
-    MAX_ANGLE_RATE=15  # comfort rate limit for angle commands, in degrees per frame.
+    MAX_ANGLE_RATE=10  # comfort rate limit for angle commands, in degrees per frame.
   )
 
   # More torque optimization
@@ -52,7 +52,7 @@ class CarControllerParams:
       self.STEER_DELTA_DOWN = 5
 
     if CP.flags & HyundaiFlags.CANFD_ANGLE_STEERING:
-       self.STEER_THRESHOLD = 250
+       self.STEER_THRESHOLD = 175
 
     # To determine the limit for your car, find the maximum value that the stock LKAS will request.
     # If the max stock LKAS request is <384, add your car to this list.
