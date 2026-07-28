@@ -203,18 +203,18 @@ static bool hyundai_canfd_tx_hook(const CANPacket_t *msg) {
   // };
 
   // KIA_SPORTAGE_HEV_2026 values. (most conservative for now) (values can be found on values.py)
-  const AngleSteeringParams HYUNDAI_STEERING_PARAMS = {
-      .slip_factor = -0.0006085930193026732,  // calc_slip_factor(VM)
-      .steer_ratio = 13.7,
-      .wheelbase = 2.756,
-  };
+  // const AngleSteeringParams HYUNDAI_STEERING_PARAMS = {
+  //     .slip_factor = -0.0006085930193026732,  // calc_slip_factor(VM)
+  //     .steer_ratio = 13.7,
+  //     .wheelbase = 2.756,
+  //   };
 
   // KIA_EV6_2025 values.
-  // const AngleSteeringParams HYUNDAI_STEERING_PARAMS = {
-  //     .slip_factor = -0.000889804937754786,
-  //     .steer_ratio = 14.25,
-  //     .wheelbase = 2.9,
-  //   };
+  const AngleSteeringParams HYUNDAI_STEERING_PARAMS = {
+      .slip_factor = -0.000889804937754786,
+      .steer_ratio = 14.25,
+      .wheelbase = 2.9,
+    };
 
   bool tx = true;
 
