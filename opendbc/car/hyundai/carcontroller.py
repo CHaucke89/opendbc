@@ -163,7 +163,7 @@ class CarController(CarControllerBase, EsccCarController, LeadDataCarController,
 
       # Failsafe if we detected we'd violate safety
       if apply_angle is None:
-        apply_torque = 0
+        apply_torque = self.apply_torque_last
         apply_angle = CS.out.steeringAngleDeg
         apply_steer_req = False
 
