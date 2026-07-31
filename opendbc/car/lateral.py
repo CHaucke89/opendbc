@@ -7,7 +7,7 @@ from opendbc.car.vehicle_model import VehicleModel
 FRICTION_THRESHOLD = 0.2
 
 # - ISO 11270
-ISO_LATERAL_ACCEL = 3.0  # m/s^2
+ISO_LATERAL_ACCEL = 4.0  # m/s^2
 ISO_LATERAL_JERK = 5.0  # m/s^3
 
 # - Common angle/curvature safety limits
@@ -15,7 +15,7 @@ ISO_LATERAL_JERK = 5.0  # m/s^3
 AVERAGE_ROAD_ROLL = 0.06  # ~3.4 degrees, 6% superelevation. higher actual roll lowers lateral acceleration
 MAX_LATERAL_ACCEL = ISO_LATERAL_ACCEL + (ACCELERATION_DUE_TO_GRAVITY * AVERAGE_ROAD_ROLL)  # ~3.6 m/s^2
 # Lower than ISO 11270 lateral jerk limit (5.0 m/s^3) with bank tolerance, matches safety MAX_LATERAL_JERK
-MAX_LATERAL_JERK = 3.0 + (ACCELERATION_DUE_TO_GRAVITY * AVERAGE_ROAD_ROLL)  # ~3.6 m/s^3
+MAX_LATERAL_JERK = ISO_LATERAL_JERK + (ACCELERATION_DUE_TO_GRAVITY * AVERAGE_ROAD_ROLL)  # ~3.6 m/s^3
 
 
 # TODO: deprecate in favor of vehicle-model-based limiting
