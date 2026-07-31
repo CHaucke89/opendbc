@@ -236,7 +236,7 @@ class CAR(Platforms):
     ],
     CarSpecs(mass=1720, wheelbase=2.895, steerRatio=13.5),
     flags=HyundaiFlags.CANFD_ANGLE_STEERING,
-  ) 
+  )
   HYUNDAI_ELANTRA = HyundaiPlatformConfig(
     [
       # TODO: 2017-18 could be Hyundai G
@@ -635,7 +635,8 @@ class CAR(Platforms):
   )
   KIA_EV6_2025 = HyundaiCanFDPlatformConfig(
     [
-      HyundaiCarDocs("Kia EV6 (with HDA I) 2025", "Highway Driving Assist I", car_parts=CarParts.common([CarHarness.hyundai_p]))
+      HyundaiCarDocs("Kia EV6 (with HDA I) 2025", "Highway Driving Assist I", car_parts=CarParts.common([CarHarness.hyundai_p])),
+      HyundaiCarDocs("Kia EV6 (with HDA II) 2025-2026", "Highway Driving Assist II", car_parts=CarParts.common([CarHarness.hyundai_p]))
     ],
     CarSpecs(mass=2055, wheelbase=2.9, steerRatio=16, tireStiffnessFactor=0.65),
     flags=HyundaiFlags.EV | HyundaiFlags.CANFD_ANGLE_STEERING,
