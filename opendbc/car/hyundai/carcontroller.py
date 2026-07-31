@@ -45,7 +45,7 @@ def compute_torque_reduction_gain(steering_torque, v_ego, lat_active, last_gain)
   if lat_active:
     ceiling = np.interp(v_ego, [0.5, 1.5], [1.0, 0.85])
     shelf = np.interp(v_ego, [2, 11], [0.45, 0.6])
-    floor = np.interp(v_ego, [2, 22], [0.1, 0.3])
+    floor = np.interp(v_ego, [2, 22], [0.3, 0.3])
     bp1 = np.interp(v_ego, [2, 11], [75, 125])
     bp2 = np.interp(v_ego, [2, 11], [125, 150])
     bp3 = np.interp(v_ego, [2, 11], [175, 275])
@@ -54,7 +54,7 @@ def compute_torque_reduction_gain(steering_torque, v_ego, lat_active, last_gain)
 
   else:
     target = 0.0
-  gain = rate_limit(target, last_gain, -0.014, 0.004)
+  gain = rate_limit(target, last_gain, -0.014, 0.008)
   return round(gain / 0.004) * 0.004
 
 
@@ -163,7 +163,7 @@ class CarController(CarControllerBase, EsccCarController, LeadDataCarController,
 
       # Failsafe if we detected we'd violate safety
       if apply_angle is None:
-        apply_torque = 0
+        apply_torque = self.apply_torque_last
         apply_angle = CS.out.steeringAngleDeg
         apply_steer_req = False
 
