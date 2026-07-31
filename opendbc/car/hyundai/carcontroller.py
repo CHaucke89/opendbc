@@ -32,8 +32,8 @@ MAX_ANGLE_CONSECUTIVE_FRAMES = 2
 # naturally on brake press. We send ~100 ms later if it fails to do so, or if we want to cancel for another reason.
 CANCEL_BUTTON_DELAY_FRAMES = 10
 
-MAX_ANGLE_RATE = 5
-ANGLE_SAFETY_BASELINE_MODEL = "KIA_SPORTAGE_HEV_2026"
+MAX_ANGLE_RATE = 10
+ANGLE_SAFETY_BASELINE_MODEL = "KIA_EV6_2025"
 
 
 def get_baseline_safety_cp():
