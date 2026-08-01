@@ -202,7 +202,7 @@ static bool hyundai_canfd_tx_hook(const CANPacket_t *msg) {
   //   .slip_factor = -0.0006085930193026732,  // calc_slip_factor(VM)
   //   .steer_ratio = 13.7,
   //   .wheelbase = 2.756,
-    };
+  //  };
 
   // KIA_EV6_2025 values.
   const AngleSteeringParams HYUNDAI_STEERING_PARAMS = {
