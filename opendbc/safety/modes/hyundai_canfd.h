@@ -207,7 +207,7 @@ static bool hyundai_canfd_tx_hook(const CANPacket_t *msg) {
   // KIA_EV6_2025 values.
   const AngleSteeringParams HYUNDAI_STEERING_PARAMS = {
       .slip_factor = -0.000889804937754786,
-      .steer_ratio = 14.25,
+      .steer_ratio = 15.66,
       .wheelbase = 2.9,
     };
 
