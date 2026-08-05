@@ -1,3 +1,5 @@
+import json
+from pathlib import Path
 import numpy as np
 from opendbc.car.vehicle_model import VehicleModel
 from opendbc.car.common.filter_simple import FirstOrderFilter
@@ -41,15 +43,61 @@ def get_baseline_safety_cp():
   return CarInterface.get_non_essential_params(ANGLE_SAFETY_BASELINE_MODEL)
 
 
-def compute_torque_reduction_gain(steering_torque, v_ego, lat_active, last_gain):
+def load_torque_reduction_params():
+  param_file = Path("/data/torque_reduction_tune.json")
+  defaults = {
+    "ceiling_v_min": 0.5,
+    "ceiling_v_max": 1.5,
+    "ceiling_gain_min": 1.0,
+    "ceiling_gain_max": 0.85,
+    "shelf_v_min": 2,
+    "shelf_v_max": 11,
+    "shelf_gain_min": 0.45,
+    "shelf_gain_max": 0.6,
+    "floor_v_min": 2,
+    "floor_v_max": 22,
+    "floor_gain_min": 0.3,
+    "floor_gain_max": 0.3,
+    "bp1_v_min": 2,
+    "bp1_v_max": 11,
+    "bp1_min": 75,
+    "bp1_max": 125,
+    "bp2_v_min": 2,
+    "bp2_v_max": 11,
+    "bp2_min": 125,
+    "bp2_max": 150,
+    "bp3_v_min": 2,
+    "bp3_v_max": 11,
+    "bp3_min": 175,
+    "bp3_max": 275,
+    "bp4_v_min": 2,
+    "bp4_v_max": 22,
+    "bp4_min": 400,
+    "bp4_max": 700,
+  }
+
+  if param_file.exists():
+    try:
+      with open(param_file) as f:
+        loaded = json.load(f)
+        defaults.update(loaded)
+    except Exception:
+      pass
+  return defaults
+
+
+def compute_torque_reduction_gain(steering_torque, v_ego, lat_active, last_gain, params=None):
+  if params is None:
+    params = load_torque_reduction_params()
+
   if lat_active:
-    ceiling = np.interp(v_ego, [0.5, 1.5], [1.0, 1.0])
-    shelf = np.interp(v_ego, [2, 11], [0.6, 0.7])
-    floor = np.interp(v_ego, [2, 22], [0.4, 0.4])
-    bp1 = np.interp(v_ego, [2, 11], [75, 125])
-    bp2 = np.interp(v_ego, [2, 11], [125, 150])
-    bp3 = np.interp(v_ego, [2, 11], [175, 275])
-    bp4 = np.interp(v_ego, [2, 22], [400, 700])
+    ceiling = np.interp(v_ego, [params["ceiling_v_min"], params["ceiling_v_max"]], [params["ceiling_gain_min"], params["ceiling_gain_max"]])
+    shelf = np.interp(v_ego, [params["shelf_v_min"], params["shelf_v_max"]], [params["shelf_gain_min"], params["shelf_gain_max"]])
+    floor = np.interp(v_ego, [params["floor_v_min"], params["floor_v_max"]], [params["floor_gain_min"], params["floor_gain_max"]])
+    bp1 = np.interp(v_ego, [params["bp1_v_min"], params["bp1_v_max"]], [params["bp1_min"], params["bp1_max"]])
+    bp2 = np.interp(v_ego, [params["bp2_v_min"], params["bp2_v_max"]], [params["bp2_min"], params["bp2_max"]])
+    bp3 = np.interp(v_ego, [params["bp3_v_min"], params["bp3_v_max"]], [params["bp3_min"], params["bp3_max"]])
+    bp4 = np.interp(v_ego, [params["bp4_v_min"], params["bp4_v_max"]], [params["bp4_min"], params["bp4_max"]])
     target = np.interp(abs(steering_torque), [bp1, bp2, bp3, bp4], [ceiling, shelf, shelf, floor])
 
   else:
@@ -124,6 +172,8 @@ class CarController(CarControllerBase, EsccCarController, LeadDataCarController,
     self.cancel_counter = 0
 
     self.apply_angle_last = 0
+    self.torque_reduction_params = load_torque_reduction_params()
+    self.param_load_counter = 0
 
   def update(self, CC, CC_SP, CS, now_nanos):
     EsccCarController.update(self, CS)
@@ -158,7 +208,12 @@ class CarController(CarControllerBase, EsccCarController, LeadDataCarController,
         apply_angle = apply_steer_angle_limits_vm(apply_angle or desired_angle, self.apply_angle_last, v_ego_raw, CS.out.steeringAngleDeg, CC.latActive,
                                                   self.params, self.BASELINE_VM)
 
-      apply_torque = compute_torque_reduction_gain(CS.out.steeringTorque, v_ego_raw, CC.latActive, self.apply_torque_last)
+      # Reload torque reduction parameters periodically (every 100 frames = ~1s)
+      if self.param_load_counter % 100 == 0:
+        self.torque_reduction_params = load_torque_reduction_params()
+      self.param_load_counter += 1
+
+      apply_torque = compute_torque_reduction_gain(CS.out.steeringTorque, v_ego_raw, CC.latActive, self.apply_torque_last, self.torque_reduction_params)
       apply_steer_req = CC.latActive and apply_torque != 0
 
       # Failsafe if we detected we'd violate safety
