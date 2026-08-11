@@ -25,7 +25,7 @@ class CarControllerParams:
     # The ADAS ECU clamps LKAS commands above 176.7° down to 176.7°,
     # and clamps LFA commands above 119.9° down to 119.9°.
     176.7,  # degrees (safe upper bound for command, allowing some margin)
-    MAX_ANGLE_RATE=5  # comfort rate limit for angle commands, in degrees per frame.
+    MAX_ANGLE_RATE=10  # comfort rate limit for angle commands, in degrees per frame.
   )
 
   # More torque optimization
@@ -638,7 +638,7 @@ class CAR(Platforms):
       HyundaiCarDocs("Kia EV6 (with HDA I) 2025", "Highway Driving Assist I", car_parts=CarParts.common([CarHarness.hyundai_p])),
       HyundaiCarDocs("Kia EV6 (with HDA II) 2025-2026", "Highway Driving Assist II", car_parts=CarParts.common([CarHarness.hyundai_p]))
     ],
-    CarSpecs(mass=2055, wheelbase=2.9, steerRatio=16, tireStiffnessFactor=0.65),
+    CarSpecs(mass=2055, wheelbase=2.9, steerRatio=14.26, tireStiffnessFactor=0.65),
     flags=HyundaiFlags.EV | HyundaiFlags.CANFD_ANGLE_STEERING,
   )
   KIA_EV9 = HyundaiCanFDPlatformConfig(
