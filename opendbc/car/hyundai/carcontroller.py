@@ -217,7 +217,7 @@ class CarController(CarControllerBase, EsccCarController, LeadDataCarController,
 
     # *** CAN/CAN FD specific ***
     if self.CP.flags & HyundaiFlags.CANFD:
-      can_sends.extend(self.create_canfd_msgs(apply_steer_req, apply_torque, set_speed_in_units, accel,
+      can_sends.extend(self.create_canfd_msgs(CC.latActive, apply_torque, set_speed_in_units, accel,
                                               stopping, hud_control, CS, CC))
     else:
       # Hold torque with induced temporary fault when cutting the actuation bit
