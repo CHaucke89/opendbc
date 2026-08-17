@@ -406,6 +406,8 @@ routes = [
 
   CarTestRoute("5d61e2f6e1f247f3/00000054--d3dfb01b34", MG.MG_5_EV),
 
+  CarTestRoute("5d61e2f6e1f247f3/00000054--d3dfb01b34", MG.MG_5_EV),
+
   # Segments that test specific issues
   # Controls mismatch due to standstill threshold
   CarTestRoute("bec2dcfde6a64235/2022-04-08--14-21-32", HONDA.HONDA_CRV_HYBRID, segment=22),
