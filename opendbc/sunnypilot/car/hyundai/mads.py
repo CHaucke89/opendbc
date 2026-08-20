@@ -53,7 +53,7 @@ class MadsCarController:
     return MadsDataSP(enable_mads, CC.latActive, disengaging, paused)
 
   def create_lkas_icon(self, CP: structs.CarParams, enabled: bool) -> int:
-    if self.mads.enable_mads:
+    if self.mads.enable_mads and CP.carFingerprint not in CAR.KIA_EV6_2025:
       lkas_icon = 2 if self.mads.lat_active else 3 if self.mads.disengaging else 1
     else:
       lkas_icon = 2 if enabled else 1
