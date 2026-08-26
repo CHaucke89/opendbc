@@ -53,8 +53,8 @@ def compute_torque_reduction_gain(steering_torque, v_ego, lat_active, last_gain)
 
   if lat_active:
     ceiling = np.interp(v_ego, [0.5, 2], [1.0, 1.0])
-    shelf = np.interp(v_ego, [2, 11], [0.6, 0.7])
-    floor = np.interp(v_ego, [2, 22], [0.3, 0.4])
+    shelf = np.interp(v_ego, [2, 11], [0.6, 0.75])
+    floor = np.interp(v_ego, [2, 22], [0.3, 0.45])
     bp1 = np.interp(v_ego, [2, 11], [75, 125])
     bp2 = np.interp(v_ego, [2, 11], [125, 150])
     bp3 = np.interp(v_ego, [2, 11], [175, 275])
