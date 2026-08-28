@@ -36,7 +36,7 @@ class CanBus(CanBusBase):
     return self._cam
 
 
-def create_steering_messages(packer, CP, CAN, enabled, lat_active, apply_torque, apply_angle, lkas_icon):
+def create_steering_messages(packer, CP, CAN, enabled, lat_active, apply_torque, apply_angle, lkas_icon, angle_fault=False):
   values = {
     "LKA_OptUsmSta": 2,
     "LKA_SysIndReq": 2 if enabled else 1,
@@ -48,7 +48,15 @@ def create_steering_messages(packer, CP, CAN, enabled, lat_active, apply_torque,
     "Damping_Gain": 100,  # can potentially tuned for better perf [3, 200]
   }
 
-  # Angle control doesn't support using LFA yet
+  lfa_alt_values = {
+    "ADAS_ActvACISta": 1 if angle_fault else 0,
+    "ADAS_ActvACILvl2Sta": 2 if lat_active and not angle_fault else 1,
+    "ADAS_StrAnglReqVal": apply_angle,
+    "ADAS_ACIAnglTqRedcGainVal": apply_torque if lat_active else 0,
+    "FCA_ESA_ActvSta": 0,
+    "FCA_ESA_TqBstGainVal": 0,
+  }
+
   if CP.flags & HyundaiFlags.CANFD_ANGLE_STEERING:
     # LKAS messages take priority over LFA messages on HDA2.
     values |= {
@@ -65,7 +73,10 @@ def create_steering_messages(packer, CP, CAN, enabled, lat_active, apply_torque,
   if CP.flags & HyundaiFlags.CANFD_LKA_STEER_MSG:
     lkas_msg = "LKAS_ALT" if CP.flags & HyundaiFlags.CANFD_LKA_STEER_MSG_ALT else "LKAS"
     if CP.openpilotLongitudinalControl:
-      ret.append(packer.make_can_msg("LFA", CAN.ECAN, values))
+      if CP.flags & HyundaiFlags.CANFD_ANGLE_STEERING:
+        ret.append(packer.make_can_msg("LFA_ALT", CAN.ECAN, lfa_alt_values))
+      else:
+        ret.append(packer.make_can_msg("LFA", CAN.ECAN, values))
     ret.append(packer.make_can_msg(lkas_msg, CAN.ACAN, values))
   else:
     ret.append(packer.make_can_msg("LFA", CAN.ECAN, values))
@@ -246,6 +257,52 @@ def create_adrv_messages(packer, CAN, frame):
     }
     ret.append(packer.make_can_msg("ADRV_0x1da", CAN.ECAN, values))
 
+  return ret
+
+
+_ADAS_DRV_TEMPLATES = {
+  0x160: bytes.fromhex("0000000000000000fffc0100a8001000"),
+  0x161: bytes.fromhex("0000000000000000c0fff0c003000040000000000000000000ff000000000000"),
+  0x162: bytes.fromhex("0000002700000000c0ff00000000000000000000000000000000000000000000"),
+  0x1BA: bytes.fromhex("00000000000000880200000000000000000100000000000f"),
+  0x1DA: bytes.fromhex("0000002200310000000000000000000000000000000000000000000000000000"),
+  0x1E0: bytes.fromhex("00000002000000000000000000000000"),
+  0x1E5: bytes.fromhex("00000000000000000000220200000080"),
+  0x1EA: bytes.fromhex("000000080000000000000000000000ff000000000000000000000000000f0f00"),
+  0x200: bytes.fromhex("00000008401b0000"),
+  0x345: bytes.fromhex("0000001500560000"),
+  0x38C: bytes.fromhex("000000f79f000000000000000000000000000000000000000000000000000000"),
+}
+
+_ADAS_DRV_PERIODS = {
+  0x160: 2,
+  0x1DA: 100,
+  0x1E0: 5,
+  0x1EA: 5,
+  0x200: 5,
+  0x345: 20,
+  0x38C: 20,
+}
+
+
+def _create_adas_drv_spoof(address, bus, counter):
+  d = bytearray(_ADAS_DRV_TEMPLATES[address])
+  d[2] = counter & 0xFF
+  crc = hkg_can_fd_checksum(address, None, d)
+  d[0] = crc & 0xFF
+  d[1] = (crc >> 8) & 0xFF
+  return (address, bytes(d), bus)
+
+
+def create_adas_drv_messages(packer, CAN, frame):
+  ret = [packer.make_can_msg("ADRV_0x51", CAN.ACAN, {})]
+  for addr, period in _ADAS_DRV_PERIODS.items():
+    if frame % period == 0:
+      ret.append(_create_adas_drv_spoof(addr, CAN.ECAN, frame // period))
+  if frame % 5 == 0:
+    counter = frame // 5
+    for addr in (0x161, 0x162, 0x1BA, 0x1E5):
+      ret.append(_create_adas_drv_spoof(addr, CAN.ECAN, counter))
   return ret
 
 

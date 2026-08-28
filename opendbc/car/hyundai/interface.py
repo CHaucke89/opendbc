@@ -46,11 +46,10 @@ class CarInterface(CarInterfaceBase):
         # this needs to be figured out for cars without an ADAS ECU
         ret.alphaLongitudinalAvailable = False
 
-      # no longitudinal for all lka_steering angle steering
-      if lka_steering and ret.flags & HyundaiFlags.CANFD_ANGLE_STEERING:
-        ret.alphaLongitudinalAvailable = False
-
-      ret.enableBsm = 0x1ba in fingerprint[CAN.ECAN]
+      # BSM comes from the ADAS DRV which we disable for angle steering long control;
+      # our spoof keeps the bus happy but TX doesn't loop back to the parser
+      angle_steering_long = bool(ret.flags & HyundaiFlags.CANFD_ANGLE_STEERING) and alpha_long and ret.alphaLongitudinalAvailable
+      ret.enableBsm = 0x1ba in fingerprint[CAN.ECAN] and not angle_steering_long
 
       # Check if the car is hybrid. Only HEV/PHEV cars have 0xFA on E-CAN.
       if 0xFA in fingerprint[CAN.ECAN]:
@@ -248,7 +247,12 @@ class CarInterface(CarInterfaceBase):
       addr, bus = 0x7d0, CanBus(CP).ECAN if CP.flags & HyundaiFlags.CANFD else 0
       if CP.flags & HyundaiFlags.CANFD_LKA_STEER_MSG.value:
         addr, bus = 0x730, CanBus(CP).ECAN
-      disable_ecu(can_recv, can_send, bus=bus, addr=addr, com_cont_req=communication_control)
+      # angle steering cars only accept disabling the ADAS Driving ECU's transmit side
+      angle_steering = bool(CP.flags & HyundaiFlags.CANFD_ANGLE_STEERING)
+      com_cont_req = bytes([uds.SERVICE_TYPE.COMMUNICATION_CONTROL, uds.CONTROL_TYPE.ENABLE_RX_DISABLE_TX,
+                            uds.MESSAGE_TYPE.NORMAL]) if angle_steering else communication_control
+
+      disable_ecu(can_recv, can_send, bus=bus, addr=addr, com_cont_req=com_cont_req)
 
     # for blinkers
     if CP.flags & HyundaiFlags.CANFD_ENABLE_BLINKERS:

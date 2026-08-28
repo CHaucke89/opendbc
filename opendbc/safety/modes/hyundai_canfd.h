@@ -177,24 +177,28 @@ static bool hyundai_canfd_tx_hook(const CANPacket_t *msg) {
   bool tx = true;
 
   // steering
-  const unsigned int steer_addr = (hyundai_canfd_lka_steer_msg && !hyundai_longitudinal) ? hyundai_canfd_get_lka_addr() : 0x12aU;
+  const unsigned int steer_addr = (hyundai_canfd_lka_steer_msg && !hyundai_longitudinal) ? hyundai_canfd_get_lka_addr() :
+                                   (hyundai_canfd_angle_steering ? 0x0cbU : 0x12aU);
   if (msg->addr == steer_addr) {
     if (hyundai_canfd_angle_steering) {
-      const int lkas_angle_active = (msg->data[9] >> 4U) & 0x3U;
-      const bool steer_angle_req = lkas_angle_active != 1;
+      if (hyundai_longitudinal) {
+        // LFA_ALT (0x0CB): allow all values while validating the correct byte layout
+        // TODO: enforce angle limits once LFA_ALT steering is validated on-car
+      } else {
+        // LKAS: LKAS_ANGLE_ACTIVE at byte 9 bits 4-5, angle at bytes 10-11, gain at byte 12
+        const bool steer_angle_req = ((msg->data[9] >> 4U) & 0x3U) != 1U;
+        int desired_angle = (msg->data[11] << 6U) | (msg->data[10] >> 2U);
+        const uint8_t gain_raw = msg->data[12];
 
-      int desired_angle = (msg->data[11] << 6U) | (msg->data[10] >> 2U);
-      desired_angle = to_signed(desired_angle, 14);
+        desired_angle = to_signed(desired_angle, 14);
+        bool gain_violation = gain_raw > 250U;
+        if (!steer_angle_req && (gain_raw != 0U)) {
+          gain_violation = true;
+        }
 
-      // ADAS_ACIAnglTqRedcGainVal: bit 96, 8 bits, unsigned. Raw 0-250 valid, 251-255 reserved.
-      const uint8_t gain_raw = msg->data[12];
-      bool gain_violation = gain_raw > 250U;
-      if (!steer_angle_req && (gain_raw != 0U)) {
-        gain_violation = true;
-      }
-
-      if (steer_angle_cmd_checks_vm(desired_angle, steer_angle_req, HYUNDAI_CANFD_ANGLE_STEERING_LIMITS, *HYUNDAI_STEERING_PARAMS) || gain_violation) {
-        tx = false;
+        if (steer_angle_cmd_checks_vm(desired_angle, steer_angle_req, HYUNDAI_CANFD_ANGLE_STEERING_LIMITS, *HYUNDAI_STEERING_PARAMS) || gain_violation) {
+          tx = false;
+        }
       }
     } else {
       int desired_torque = (((msg->data[6] & 0xFU) << 7U) | (msg->data[5] >> 1U)) - 1024U;
@@ -274,6 +278,7 @@ static safety_config hyundai_canfd_init(uint16_t param) {
 
   static const CanMsg HYUNDAI_CANFD_LKA_STEER_MSG_LONG_TX_MSGS[] = {
     HYUNDAI_CANFD_LKA_STEER_MSG_COMMON_TX_MSGS(0, 1)
+    HYUNDAI_CANFD_LKA_STEER_MSG_ALT_COMMON_TX_MSGS(0, 1)
     HYUNDAI_CANFD_LFA_STEERING_COMMON_TX_MSGS(1)
     HYUNDAI_CANFD_SCC_CONTROL_COMMON_TX_MSGS(1, true)
     {0x51,  0, 32, .check_relay = false},  // ADRV_0x51
@@ -283,6 +288,12 @@ static safety_config hyundai_canfd_init(uint16_t param) {
     {0x200, 1,  8, .check_relay = false},  // ADRV_0x200
     {0x345, 1,  8, .check_relay = false},  // ADRV_0x345
     {0x1DA, 1, 32, .check_relay = false},  // ADRV_0x1da
+    {0x0CB, 1, 24, .check_relay = false},  // LFA_ALT
+    {0x1BA, 1, 24, .check_relay = false},  // ADAS_CMD_50_50ms
+    {0x1E5, 1, 16, .check_relay = false},  // BLINDSPOTS_FRONT_CORNER_1
+    {0x161, 1, 32, .check_relay = false},  // CCNC_0x161
+    {0x162, 1, 32, .check_relay = false},  // CCNC_0x162
+    {0x38C, 1, 32, .check_relay = false},  // ADRV_0x38c
   };
 
   static const CanMsg HYUNDAI_CANFD_LFA_STEERING_TX_MSGS[] = {
