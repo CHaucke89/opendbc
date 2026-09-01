@@ -86,11 +86,12 @@ def create_suppress_lfa(packer, CAN, lfa_block_msg, lka_steering_alt):
   return packer.make_can_msg(suppress_msg, CAN.ACAN, values)
 
 
-def create_buttons(packer, CP, CAN, cnt, btn):
+def create_buttons(packer, CP, CAN, cnt, btn, right_paddle=False):
   values = {
     "COUNTER": cnt,
     "SET_ME_1": 1,
     "CRUISE_BUTTONS": btn,
+    "RIGHT_PADDLE": right_paddle,
   }
 
   bus = CAN.ECAN if CP.flags & HyundaiFlags.CANFD_LKA_STEER_MSG else CAN.CAM
