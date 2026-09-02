@@ -86,12 +86,11 @@ def create_suppress_lfa(packer, CAN, lfa_block_msg, lka_steering_alt):
   return packer.make_can_msg(suppress_msg, CAN.ACAN, values)
 
 
-def create_buttons(packer, CP, CAN, cnt, btn, right_paddle=False):
+def create_buttons(packer, CP, CAN, cnt, btn):
   values = {
     "COUNTER": cnt,
     "SET_ME_1": 1,
     "CRUISE_BUTTONS": btn,
-    "RIGHT_PADDLE": right_paddle,
   }
 
   bus = CAN.ECAN if CP.flags & HyundaiFlags.CANFD_LKA_STEER_MSG else CAN.CAM
@@ -249,6 +248,14 @@ def create_adrv_messages(packer, CAN, frame):
 
   return ret
 
+def create_paddle_msg(packer, CAN, left_paddle, right_paddle):
+  ret = []
+
+  values = {
+    'RIGHT_PADDLE': right_paddle,
+    'LEFT_PADDLE': left_paddle,
+  }
+  ret.append(packer.make_can_msg("CRUISE_BUTTONS", CAN.ECAN, values))
 
 def hkg_can_fd_checksum(address: int, sig, d: bytearray) -> int:
   crc = 0
