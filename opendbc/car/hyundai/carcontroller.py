@@ -356,7 +356,7 @@ class CarController(CarControllerBase, EsccCarController, LeadDataCarController,
       self.prev_gear_shifter = CS.out.gearShifter
 
       if self.auto_regen_paddle_frames_remaining > 0:
-        can_sends.append(hyundaicanfd.create_paddle_msg(self.packer, self.CAN, 0, 1))
+        can_sends.append(hyundaicanfd.create_buttons(self.packer, self.CP, self.CAN, CS.buttons_counter + 1, Buttons.NONE, right_paddle=True))
         self.auto_regen_paddle_frames_remaining -= 1
 
     return can_sends
