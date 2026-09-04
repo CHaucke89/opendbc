@@ -35,9 +35,6 @@ CANCEL_BUTTON_DELAY_FRAMES = 10
 MAX_ANGLE_RATE = 10
 ANGLE_SAFETY_BASELINE_MODEL = "KIA_EV6_2025"
 
-GearShifter = structs.CarState.GearShifter
-AUTO_REGEN_PADDLE_FRAMES = int(2.0 / DT_CTRL)  # hold the right paddle for 2 seconds after shifting into drive
-
 
 def get_baseline_safety_cp():
   from opendbc.car.hyundai.interface import CarInterface
@@ -136,10 +133,6 @@ class CarController(CarControllerBase, EsccCarController, LeadDataCarController,
     self.cancel_counter = 0
 
     self.apply_angle_last = 0
-
-    # auto regen: hold the right paddle for AUTO_REGEN_PADDLE_FRAMES once we shift into drive
-    self.prev_gear_shifter = None
-    self.auto_regen_paddle_frames_remaining = 0
 
   def update(self, CC, CC_SP, CS, now_nanos):
     EsccCarController.update(self, CS)
@@ -348,15 +341,5 @@ class CarController(CarControllerBase, EsccCarController, LeadDataCarController,
             for _ in range(20):
               can_sends.append(hyundaicanfd.create_buttons(self.packer, self.CP, self.CAN, CS.buttons_counter + 1, Buttons.RES_ACCEL))
             self.last_button_frame = self.frame
-
-    # Simulate pressing the right paddle for 2s once in drive to enable auto-regen braking automatically.
-    if self.car_fingerprint == CAR.KIA_EV6_2025:
-      if CS.out.gearShifter == GearShifter.drive and self.prev_gear_shifter != GearShifter.drive:
-        self.auto_regen_paddle_frames_remaining = AUTO_REGEN_PADDLE_FRAMES
-      self.prev_gear_shifter = CS.out.gearShifter
-
-      if self.auto_regen_paddle_frames_remaining > 0:
-        can_sends.append(hyundaicanfd.create_buttons(self.packer, self.CP, self.CAN, CS.buttons_counter + 1, Buttons.NONE, right_paddle=True))
-        self.auto_regen_paddle_frames_remaining -= 1
 
     return can_sends
