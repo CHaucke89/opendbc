@@ -63,7 +63,7 @@ def compute_torque_reduction_gain(steering_torque, v_ego, lat_active, last_gain)
 
   else:
     target = 0.0
-  gain = rate_limit(target, last_gain, -0.018, 0.018)
+  gain = rate_limit(target, last_gain, -0.020, 0.020)
   return round(gain / 0.004) * 0.004
 
 
